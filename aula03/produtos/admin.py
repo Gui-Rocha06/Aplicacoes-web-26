@@ -22,7 +22,7 @@ class CategoriaAdmin(admin.ModelAdmin):
 @admin.register(Produto)
 
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = ["id", "nome", "quantidade", "preco", "categoria",  "created_at"]
+    list_display = ["id", "nome", "quantidade", "preco","categoria",  "created_at"]
     search_fields = ["nome"]
     list_filter = ["categoria"]
     
@@ -47,7 +47,10 @@ class ItemPedidoInline(admin.TabularInline):
     fields = (
         "produto",
         "quantidade",
-        "preco_unitario"
+        "preco_unitario",
+    )
+    readonly_fields =(
+        "preco_unitario",
     )
     
 # Pedido
@@ -56,23 +59,24 @@ class ItemPedidoInline(admin.TabularInline):
 
 class PedidoAdmin(admin.ModelAdmin):
     
-    list_display = (
+    list_display = [
         "id",
         "cliente",
         "data_pedido",
         "status",
         "valor_total"
-    )
+    ]
     
-    list_filter = (
+    list_filter = [
         "status",
         "data_pedido"
-    )
+    ]
     
     
     search_fields = (
-        "cliente_nome",
-        "cliente_email"
+        "cliente__nome",
+        "cliente__email",
+        "descricao"
     )
     
     inlines = [
@@ -100,12 +104,12 @@ class ItemPedidoAdmin(admin.ModelAdmin):
         "produto",
         "quantidade",
         "preco_unitario",
-        "valor_subtotal"
+        "valor_subtotal",
     )
     
     search_fields = (
-        "produto_nome",
-        "pedido_cliente_nome",
+        "produto__nome",
+        "pedido__cliente__nome",
     )
     
     def valor_subtotal(self,obj):
