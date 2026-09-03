@@ -2,9 +2,14 @@ from django.shortcuts import render
 from rest_framework import viewsets # importa o viewset a partir da biblioteca restframework
 from .models import Pedido
 from .serializers import StatusPedidoSerializer
+from rest_framework import mixins
 
 from .serializers import (ProdutoSerializer, CategoriaSerializer, ClienteSerializer, PedidoSerializer, ItemPedidoSerializer) 
 from .models import (Produto, Categoria, Cliente, Pedido, ItemPedido)  
+
+from rest_framework.permissions import(
+    AllowAny, IsAuthenticated
+)
 # importando metodo para exibir uma pagina home
 
 from django.http import HttpResponse
@@ -18,6 +23,18 @@ class ProdutoViewSet(viewsets.ModelViewSet):
     queryset = Produto.objects.all().order_by("-id")
     serializer_class = ProdutoSerializer
 
+    # Função de permissão
+
+    def get_permissions(self):
+
+        # Permite que qualquer pessoa consulte os produtos
+        if self.action in ['list', 'retriever']:
+
+            return [AllowAny()]
+
+        # Para poder cadastrar, editar ou excluir o usuário precisa estar autenticado
+    
+        return [IsAuthenticated()]
 
 # Categoria
 
