@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 from rest_framework.routers import DefaultRouter
-from produtos.views import (home,ProdutoViewSet, CategoriaViewSet, ClienteViewSet, PedidoViewSet,ItemPedidoViewSet,StatusPedidoViewSet)
+from produtos.views import (home,ProdutoViewSet, CategoriaViewSet, ClienteViewSet, PedidoViewSet,ItemPedidoViewSet,StatusPedidoViewSet, CadastroUsuarioView)
 from rest_framework_simplejwt.views import (
     TokenObtainPairView, TokenRefreshView
 )
+
+
+
 
 def home(request):
     return HttpResponse("Olá Django ! Aplicações Web 2026 - 2 Aula 03 - Loja de produtos")
@@ -39,17 +42,21 @@ urlpatterns = [
     path('', home),
     path('admin/',admin.site.urls),
     path('api/', include(router.urls)),
-
+    path('api/usuarios/cadastrar/',CadastroUsuarioView.as_view(), name = 'cadastrar_usuario'),
+    
+    
     # Login - gera Access Token e Refresh Token 
-    path('api/token',
+    path('api/token/',
          TokenObtainPairView.as_view(),
-         name = 'token_obtain_pair'
+         name= 'token_obtain_pair'
          ),
-
-    # Gera um novo Acces Token
+    
+    
+    # Gera um novo Access Token
+    
     path('api/token/refresh/',
          TokenRefreshView.as_view(),
          name = 'token_refresh'
          )
-    
+   
 ]
