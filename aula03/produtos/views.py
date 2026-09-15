@@ -86,11 +86,11 @@ class PedidoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     
     # Mostra somente os pedidos do usuario autenticado
-    
+   
     def get_queryset(self):
         
         return Pedido.objects.filter(
-            cliente_usuario = self.request.user).order_by("-id")
+            cliente__usuario = self.request.user).order_by("-id")
         
         
     # Ao criar um pedido, associa automaticamente ao cliente autenticado
@@ -108,9 +108,6 @@ class PedidoViewSet(viewsets.ModelViewSet):
         
         serializer.save(cliente =cliente)
         
-
-
-
 
 
 

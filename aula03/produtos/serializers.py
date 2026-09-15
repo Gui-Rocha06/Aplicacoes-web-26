@@ -127,40 +127,6 @@ class ItemPedidoSerializer(serializers.ModelSerializer):
     def get_subtotal(self, obj):
         return obj.subtotal()
 
-
-# Pedido
-class PedidoSerializer(serializers.ModelSerializer):
-    cliente = serializers.PrimaryKeyRelatedField(
-        read_only = True
-    )
-
-    total = serializers.SerializerMethodField(
-        read_only=True
-    )
-
-    class Meta:
-        model = Pedido
-
-        fields = [
-            "id",
-            "cliente",
-            "descricao",
-            "data_pedido",
-            "status",
-            "total"
-        ]
-
-        read_only_fields = [
-            "data_pedido",
-            "status"
-        ]
-
-    def get_total(self, obj):
-        return obj.total()
-
-
-
-
 class ItemPedidoDetalheSerializer(serializers.ModelSerializer):
     
     produto_nome = serializers.CharField(
@@ -186,6 +152,66 @@ class ItemPedidoDetalheSerializer(serializers.ModelSerializer):
 
     def get_subtotal(self, obj):
         return obj.subtotal()
+    
+    
+# Pedido
+class PedidoSerializer(serializers.ModelSerializer):
+
+    cliente = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+
+    itens = ItemPedidoDetalheSerializer(
+        many=True
+    )
+
+    total = serializers.SerializerMethodField(
+        read_only=True
+    )
+
+    class Meta:
+        model = Pedido
+
+        fields = [
+            "id",
+            "cliente",
+            "descricao",
+            "data_pedido",
+            "status",
+            "itens",
+            "total"
+        ]
+
+        read_only_fields = [
+            "id",
+            "cliente",
+            "data_pedido",
+            "status",
+            "total"
+        ]
+
+    def create(self, validated_data):
+
+        # Retira os itens antes de criar o pedido
+        itens_data = validated_data.pop("itens")
+
+        # Cria o pedido
+        pedido = Pedido.objects.create(
+            **validated_data
+        )
+
+        # Cria cada item e associa ao pedido criado
+        for item_data in itens_data:
+
+            ItemPedido.objects.create(
+                pedido=pedido,
+                **item_data
+            )
+
+        return pedido
+
+    def get_total(self, obj):
+        return obj.total()
 
 # Alteração do status do pedido
 class StatusPedidoSerializer(serializers.ModelSerializer):
