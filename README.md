@@ -18,7 +18,7 @@ python -m venv venv
 Ativa o ambiente para garantir que as instalações sejam feitas apenas dentro dele. *(Nota: este comando é para Windows PowerShell. No Linux/Mac seria `source venv/bin/activate`)*.
 
 ```powershell
-venv\Scripts\Activate.ps1
+venv/Scripts/Activate.ps1
 
 ```
 
