@@ -59,7 +59,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from '../components/Navbar.vue'
 import CarrinhoItem from '../components/CarrinhoItem.vue'
-import { useCarrinhoStore } from '../stores/carrinho'
+import { useCarrinhoStore } from '../stores/carrinho.js'
 
 const carrinho = useCarrinhoStore()
 const router = useRouter()

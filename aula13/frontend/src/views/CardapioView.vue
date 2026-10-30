@@ -38,7 +38,7 @@
 import { computed, ref } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import ProdutoCard from '../components/ProdutoCard.vue'
-import { useCarrinhoStore } from '../stores/carrinho'
+import { useCarrinhoStore } from '../stores/carrinho.js'
 
 const carrinho = useCarrinhoStore()
 const categoriaAtiva = ref('Todos')

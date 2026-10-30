@@ -34,7 +34,7 @@
 
 <script setup>
 import Navbar from '../components/Navbar.vue'
-import { useCarrinhoStore } from '../stores/carrinho'
+import { useCarrinhoStore } from '../stores/carrinho.js'
 
 const carrinho = useCarrinhoStore()
 const pedido = carrinho.ultimoPedido
